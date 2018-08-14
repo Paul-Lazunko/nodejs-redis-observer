@@ -1,0 +1,14 @@
+{
+  "name": "nodejs-redis-observer",
+  "version": "1.0.0",
+  "description": "Node.js package for data exchange between different processes (Node.js applications)",
+  "main": "index.js",
+  "repository": "git@github.com:Paul-Lazunko/nodejs-redis-observer.git",
+  "author": "Paul Lazunko",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ioredis": "^3.2.2",
+    "redis": "^2.8.0"
+  }
+}
