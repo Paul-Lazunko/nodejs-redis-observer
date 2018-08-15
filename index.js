@@ -5,15 +5,17 @@ class RedisPublisherSubscriber {
 
   constructor ({ server, channels }) {
 
+    this.callbacks = channels;
+
     this.subscriber = Redis.createClient( server );
 
     this.publisher = new RedisPublisher( server );
 
     this.subscriber.on('message', ( channel, data ) => {
 
-      if ( channels.hasOwnProperty( channel ) && typeof channels[ channel ] === 'function' ) {
+      if ( this.callbacks.hasOwnProperty( channel ) && typeof this.callbacks[ channel ] === 'function' ) {
 
-        channels[ channel ]( data );
+        this.callbacks[ channel ]( data );
 
       }
 
@@ -22,6 +24,18 @@ class RedisPublisherSubscriber {
     for ( let channel in channels ) {
 
       this.subscriber.subscribe( channel );
+
+    }
+
+  }
+
+  subscribe ( channel, callback ) {
+
+    if ( typeof channel === 'string' && typeof callback === 'function' ) {
+
+      this.subscriber.subscribe( channel );
+
+      this.callbacks[ channel ] = callback.bind( this.callbacks );
 
     }
 
