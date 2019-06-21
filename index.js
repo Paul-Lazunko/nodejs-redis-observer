@@ -11,7 +11,7 @@ class RedisPublisherSubscriber {
       if ( this.callbacks.hasOwnProperty( channel ) && Array.isArray( this.callbacks[ channel ]) ) {
         for ( let i=0; i < this.callbacks[channel].length; i++ ) {
           if ( typeof this.callbacks[ channel ][ i ] === 'function' ) {
-            this.callbacks[ channel ][ i ]( data );
+            this.callbacks[ channel ][ i ]( data, channel );
           }
         }
       }
