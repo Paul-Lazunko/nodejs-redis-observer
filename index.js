@@ -16,6 +16,15 @@ class RedisPublisherSubscriber {
         }
       }
     });
+    this.subscriber.on('pmessage', ( pattern, channel, data ) => {
+      if ( this.callbacks.hasOwnProperty( pattern ) && Array.isArray( this.callbacks[ pattern ]) ) {
+        for ( let i=0; i < this.callbacks[pattern].length; i++ ) {
+          if ( typeof this.callbacks[ pattern ][ i ] === 'function' ) {
+            this.callbacks[ pattern ][ i ]( data, channel );
+          }
+        }
+      }
+    });
   }
 
   subscribe ( channel, callback ) {
