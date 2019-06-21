@@ -26,6 +26,14 @@ class RedisPublisherSubscriber {
     }
   }
 
+  psubscribe ( channel, callback ) {
+    if ( typeof channel === 'string' && typeof callback === 'function' ) {
+      this.subscriber.psubscribe( channel );
+      this.callbacks[ channel ] = this.callbacks[ channel ] || [];
+      this.callbacks[ channel ].push( callback.bind( this.callbacks ) );
+    }
+  }
+
   unsubscribe(channel) {
     this.subscriber.unsubscribe( channel );
     this.callbacks[channel] = [];
