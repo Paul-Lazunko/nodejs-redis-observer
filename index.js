@@ -26,6 +26,10 @@ class RedisPublisherSubscriber {
     }
   }
 
+  unsubscribe(channel) {
+    this.subscriber.unsubscribe( channel );
+  }
+
   publish ( channel, data ) {
     this.publisher.publish( channel, data );
   }
