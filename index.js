@@ -28,6 +28,7 @@ class RedisPublisherSubscriber {
 
   unsubscribe(channel) {
     this.subscriber.unsubscribe( channel );
+    this.callbacks[channel] = [];
   }
 
   publish ( channel, data ) {
