@@ -3,9 +3,9 @@ const RedisPublisher = require('ioredis');
 
 class RedisPublisherSubscriber {
 
-  constructor ({ server, channels }) {
+  constructor ({ server }) {
 
-    this.callbacks = channels;
+    this.callbacks = {};
 
     this.subscriber = Redis.createClient( server );
 
@@ -13,19 +13,17 @@ class RedisPublisherSubscriber {
 
     this.subscriber.on('message', ( channel, data ) => {
 
-      if ( this.callbacks.hasOwnProperty( channel ) && typeof this.callbacks[ channel ] === 'function' ) {
+      if ( this.callbacks.hasOwnProperty( channel ) && Array.isArray( this.callbacks[ channel ]) ) {
 
-        this.callbacks[ channel ]( data );
+        for ( let i=0; i < this.callbacks[channel].length; i++ ) {
+          if ( typeof this.callbacks[ channel ][ i ] === 'function' ) {
+            this.callbacks[ channel ][ i ]( data );
+          }
+        }
 
       }
 
     });
-
-    for ( let channel in channels ) {
-
-      this.subscriber.subscribe( channel );
-
-    }
 
   }
 
@@ -35,7 +33,8 @@ class RedisPublisherSubscriber {
 
       this.subscriber.subscribe( channel );
 
-      this.callbacks[ channel ] = callback.bind( this.callbacks );
+      this.callbacks[ channel ] = this.callbacks[ channel ] || [];
+      this.callbacks[ channel ].push( callback.bind( this.callbacks ) );
 
     }
 
