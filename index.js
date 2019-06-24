@@ -1,6 +1,6 @@
 const Redis = require('redis');
 const RedisPublisher = require('ioredis');
-require('redis-streams')(Redis);
+require('redis-stream')(Redis);
 
 class RedisPublisherSubscriber {
 
