@@ -1,5 +1,6 @@
 const Redis = require('redis');
 const RedisPublisher = require('ioredis');
+require('redis-streams')(Redis);
 
 class RedisPublisherSubscriber {
 
@@ -50,6 +51,14 @@ class RedisPublisherSubscriber {
 
   publish ( channel, data ) {
     this.publisher.publish( channel, data );
+  }
+
+  readStream(key) {
+    return this.subscriber.readStream(key)
+  }
+
+  writeStream(key, maxAge) {
+    return this.subscriber.writeStream(key, maxAge);
   }
 
 }
