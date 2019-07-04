@@ -1,6 +1,5 @@
 const Redis = require('redis');
 const RedisPublisher = require('ioredis');
-const redisWStream = require('redis-wstream'); // factory
 
 class RedisPublisherSubscriber {
 
